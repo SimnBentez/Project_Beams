@@ -24,9 +24,9 @@ El proyecto *Project Beam* tiene como objetivo desarrollar una solución eficien
 * Código estructurado y documentado para replicar los análisis.
 * Reportes exportables, como se mencionó anteriormente, en archivo .xlsx (Excel) y formato .dxf para AutoCAD.
 
-### Guía de usuario
+## Guía de usuario
 
-#### Instalación
+### Instalación
 
 Primero, debe verificar que tenga las librerías instaladas como *sympy*, *numpy*, *ezdxf* y *matplotlib* como se presenta a continuación:
 
