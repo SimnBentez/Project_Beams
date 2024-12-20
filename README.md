@@ -20,9 +20,9 @@ El proyecto *Project_Beams* tiene como objetivo desarrollar una solución eficie
 
 ### Resultados esperados
 
-* Diagramas claros de momento flector, fuerza cortante y deformaciones.
+* Diagramas claros de momento flector y fuerza cortante.
 * Código estructurado y documentado para replicar los análisis.
-* Reportes exportables, como se mencionó anteriormente, en archivo .xlsx (Excel) y .dxf.
+* Reportes exportables, como se mencionó anteriormente, en archivo .xlsx (Excel) y formato .dxf para AutoCAD.
 
 ### Guía de usuario
 
@@ -33,3 +33,23 @@ El proyecto *Project_Beams* tiene como objetivo desarrollar una solución eficie
 ### Introduction
 
 The *Project Beams* aims to develop an efficient solution for the structural design of beams, integrating load calculations, stress analysis, and result visualization. This approach combines advanced computational tools and modern design methodologies.
+
+### Objectives
+
+1. Develop a structural model to analyze the behavior of beams under various loading conditions.
+2. Visualize shear and bending moment diagrams to facilitate and verify the interpretation of results.
+3. Generate a report in two files: Excel and DXF, allowing for the review of the calculations performed by the program and an AutoCAD file with the plans.
+
+### Metodology
+
+1. Implementation of mathematical models using Python and specialized libraries (Sympy, Numpy, Matplotlib, etc).
+2. Interactive visualization of structural diagrams using Matplotlib.
+3. Validation of results through comparisons with codes and standards (NSR-10, ACI).
+
+### Expected Results
+
+* Clear diagrams of bending moments and shear forces.
+* Structured and documented code for replicating analyses.
+* Exportable reports, as mentioned earlier, in .xlsx (Excel) and .dxf formats.
+
+### User guide
