@@ -4,7 +4,7 @@
 
 ### Introducción
 
-El proyecto *Project_Beams* tiene como objetivo desarrollar una solución eficiente para el diseño estructural de vigas, integrando cálculos de cargas, análisis de esfuerzos y visualización de resultados. Este enfoque combina herramientas computacionales como lo es el lenguaje de programación *python* y metodologías de diseño modernas; basándose en la norma NSR - 10, título C y la ACI.
+El proyecto *Project Beam* tiene como objetivo desarrollar una solución eficiente para el diseño estructural de vigas, integrando cálculos de cargas, análisis de esfuerzos y visualización de resultados. Este enfoque combina herramientas computacionales como lo es el lenguaje de programación *python* y metodologías de diseño modernas; basándose en la norma NSR - 10, título C y la ACI.
 
 ### Objetivos
 
@@ -32,7 +32,7 @@ El proyecto *Project_Beams* tiene como objetivo desarrollar una solución eficie
 
 ### Introduction
 
-The *Project Beams* aims to develop an efficient solution for the structural design of beams, integrating load calculations, stress analysis, and result visualization. This approach combines advanced computational tools and modern design methodologies.
+The *Project Beam* aims to develop an efficient solution for the structural design of beams, integrating load calculations, stress analysis, and result visualization. This approach combines advanced computational tools and modern design methodologies.
 
 ### Objectives
 
