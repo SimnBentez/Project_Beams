@@ -26,6 +26,14 @@ El proyecto *Project Beam* tiene como objetivo desarrollar una solución eficien
 
 ### Guía de usuario
 
+#### Instalación
+
+Primero, debe verificar que tenga las librerías instaladas como *sympy*, *numpy*, *ezdxf* y *matplotlib* como se presenta a continuación:
+
+```bash
+pip install sympy numpy matplotlib
+```
+
 ---
 
 ## [EN] English
