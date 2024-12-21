@@ -138,8 +138,11 @@ To start the program, simply execute the Python file. This can be done by select
 To guide users through the necessary steps, the following example demonstrates the analysis of a beam.
 
 #### Example Problem
+
 Step 1: Define the beam spans
 A span is defined as the length between two supports or where a distributed load changes. In this example, the beam has two spans:
+
+![image](https://github.com/user-attachments/assets/80c9ee5c-d079-4475-ac33-431d91b7a8fe)
 
 From the fixed support to where the load begins.
 From the start of the load to the end of the distributed load.
@@ -150,11 +153,11 @@ The program will prompt you to specify the number of spans in the beam. In this 
 Step 2: Span lengths
 Enter the corresponding lengths for each span. For instance:
 
+![image](https://github.com/user-attachments/assets/45029555-2041-4a49-b920-ffd5a3ef0de1)
+
 Length of the first span: 3 meters.
 Length of the second span: 3 meters.
 The distributed load is 1.8 tonf/m in this example.
-
-![image](https://github.com/user-attachments/assets/45029555-2041-4a49-b920-ffd5a3ef0de1)
 
 Step 3: Define the supports
 Specify the supports for the beam. In this case, select a fixed support and a free support. The result will look like this:
