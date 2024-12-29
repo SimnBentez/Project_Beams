@@ -436,6 +436,12 @@ def points_bending_moment(forces_beam, loads_applied, elements, lengths):
         if i == 0 and abs(forces_beam[1][0]) >  0.01:
             x_bending.append(0)
             M_bending.append(round(-forces_beam[1][0],3))
+        elif i == 0:
+            x_bending.append(0)
+            M_bending.append(0)
+        elif i == (elements - 1) and abs(Mo) > 0.01:
+            x_bending.append(l2)
+            M_bending.append(round(Mo, 3))
 
         # Identifying zero crossings
         zero_crossings = np.where(np.diff(np.sign(y)))[0]
@@ -475,6 +481,10 @@ def points_bending_moment(forces_beam, loads_applied, elements, lengths):
     
     xaux_sorted = list(xaux_sorted)
     Maux_sorted = list(Maux_sorted)
+
+    if not xaux_sorted[-1] == l2:
+        xaux_sorted.append(l2)
+        Maux_sorted.append(0)
 
     return xaux_sorted, Maux_sorted
 
@@ -562,8 +572,9 @@ def shear_design(V, x, d, length, total_length, Vc, fi, b, com_con):
     l = length
     lt = total_length
     d = d / 100 # pass cm to m
+    Vc = round(Vc, 3)
     try:
-        lfi = l-d
+        lfi = l - d
         result = np.where((x > d) & (x < lfi))
         # The maximum shear is taken where the beam really begins to support, 
         # which is at a distance called d, which is found in the NSR - 10, title C
@@ -575,17 +586,21 @@ def shear_design(V, x, d, length, total_length, Vc, fi, b, com_con):
         Vsi = (Vi/fi) - Vc
         x1 = lt + ld
         x4 = lt + li
+        if Vsd > 0 or Vsi > 0:
+            As = 2 * (((3/8) * 2.54)**2) * (np.pi/4) # Normally an N3 rod is used for stirrups
+            obs = "El nervio requiere estribos!" 
+        else:
+            As = 0
+            obs = "El nervio no requiere estribos!"
         if Vsd < 0:
             x2 = "NA"
             s1 = 0
             s2 = 0
-            obs = "El nervio no requiere estribos"
         else:
-            obs = "El nervio requiere estribos!"
-            As = 2 * (((3/8) * 2.54)**2) * (np.pi/4) # Normally an N3 rod is used for stirrups
             result = np.where(V < Vc)
             xd = x[result]
             x2 = lt + xd[0]
+            x2 = round(x2, 2)
             if Vsd > 1.1 * b * d * (com_con**0.5): # according to NSR - 10, title C11
                 if d/2 > 60:
                     s1 = 15 # cm
@@ -612,18 +627,16 @@ def shear_design(V, x, d, length, total_length, Vc, fi, b, com_con):
                     else:
                         s1 = smin
                 s2 = 2*s1
-            
+
         if Vsi < 0:
             x3 = "NA"
             s3 = 0
             s4 = 0
-            obs = "El nervio no requiere estribos"
         else:
-            obs = "El nervio requiere estribos!"
-            As = 2 * (((3/8) * 2.54)**2) * (np.pi/4) # Normally an N3 rod is used for stirrups
-            result = np.where(V < -Vc)
+            result = np.where(V > -Vc)
             xi = x[result]
-            x3 = lt + xi[0]
+            x3 = lt + xi[-1]
+            x3 = round(x3, 2)
             if Vsi > 1.1 * b * d * (com_con**0.5): # according to NSR - 10, title C11
                 if d/2 > 60:
                     s3 = 15 # cm
@@ -650,10 +663,26 @@ def shear_design(V, x, d, length, total_length, Vc, fi, b, com_con):
                     else:
                         s3 = smin
                 s4 = 2*s3
-        
+
         s1, s2 = np.min(np.array([s1, s2, s3, s4])), np.max(np.array([s1, s2, s3, s4]))
+
+        # conditional to avoid errors in data processing.
+        # That is, 0 does not appear if it is not necessary
+        if x2 != "NA":
+            if abs(x1 - x2) < 0.01:
+                x2 = "NA"
+
+        if x3 !="NA":
+            if abs(x3 - x4) < 0.01:
+                x3 = "NA"
+
+        if x2 == "NA" and x3 == "NA":
+            s1 = 0
+        elif s1 == 0:
+            s1 = s2/2
     except:
-        Vd, Vi, As, x1, x2, x3, x4, s1, s2, obs = 0, 0, 0, 0, 0, 0, 0, 0, 0, "No se comporta el problema como un nervio"
+        Vd, Vi, As, x1, x2, x3, x4, s1, s2 = 0, 0, 0, 0, 0, 0, 0, 0, 0 
+        obs = "No se comporta el problema como un nervio"
 
     # Several values ​​are provided that help with the design, these are:
     # 1. Vd, Shear at the beginning of the section
@@ -666,13 +695,7 @@ def shear_design(V, x, d, length, total_length, Vc, fi, b, com_con):
     # 8. s2, separation of reinforcement
     # 9. obs, string with information of calculation 
 
-    Vd, Vi, As, x1 = round(Vd, 3), round(Vi, 3), round(As, 3), round(x1, 3)
-    x4, s1, s2 =  round(x4, 3), round(s1, 3), round(s2, 3)
-
-    if not str(x3):
-        x3 = round(x3, 3)
-    
-    if not str(x2):
-        x2 = round(x2, 3)
+    Vd, Vi, As, x1 = round(Vd, 2), round(Vi, 2), round(As, 2), round(x1, 2)
+    x4, s1, s2 =  round(x4, 2), round(s1, 2), round(s2, 2)
 
     return Vd, Vi, As, x1, x2, x3, x4, s1, s2, obs     

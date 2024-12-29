@@ -262,8 +262,8 @@ def design_shear_beam(forces_beam, loads_applied, elements, lengths, height, bas
         "Ubicación cortante derecho (m)": x1,
         "Ubicación sin cortante derecho (m)": x2,
         "Espaciamiento del refuerzo 1 (cm)": s1,
-        "Ubicación cortante izquierdo (m)": x3,
-        "Ubicación sin cortante izquierdo (m)": x4,
+        "Ubicación sin cortante izquierdo (m)": x3,
+        "Ubicación cortante izquierdo (m)": x4,
         "Espaciamiento del refuerzo 2 (cm)": s2,
         "Observaciones": obs
     }

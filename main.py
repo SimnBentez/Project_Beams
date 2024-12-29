@@ -45,7 +45,6 @@ while ans < 1:
         break
     else:
         print('No estás digitando correctamente las opciones. Inténtalo nuevamente.')
-        ans = 0
 
 
 if ans == 1:
@@ -93,13 +92,13 @@ if ans == 1:
             print('¡Algo salió mal!') 
             ans = 0
 
-d1, d2 = design_moment_beam(forces_beam, loads_applied, n, lengths, h, b, r, fcon)
-d3, d4 = design_shear_beam(forces_beam, loads_applied, n, lengths, h, b, r, fcon)
+    d1, d2 = design_moment_beam(forces_beam, loads_applied, n, lengths, h, b, r, fcon)
+    d3, d4 = design_shear_beam(forces_beam, loads_applied, n, lengths, h, b, r, fcon)
 
-Excel_data(d1, d2, d3, d4)
+    Excel_data(d1, d2, d3, d4)
 
-lT = sum(lengths) # total length
+    lT = sum(lengths) # total length
 
-lT = lT * 100 # pass m to cm
+    lT = lT * 100 # pass m to cm
 
-Initialize_Draw(10, 40, lT) 
+    Initialize_Draw(10, 40, lT, r, d2, d4)
