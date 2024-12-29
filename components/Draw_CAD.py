@@ -85,7 +85,7 @@ def Initialize_Draw(b, h, lt, r, data_long, data_trans):
        os.makedirs(folder_name)
     doc.saveas(f"./Resultados/{name}.dxf")
 
-def reinforcing_steel_long(msp, h, r, dict):
+def reinforcing_steel_long(msp, b, h, r, dict):
     """
     Definition
     -----------------
@@ -101,13 +101,14 @@ def reinforcing_steel_long(msp, h, r, dict):
 
     Args:
     msp: model space
+    b: base
     h: height
     r: reinforcement coating
     dict: dictionary longitudinal steel (design)
     """
 
 
-def reinforcing_steel_trans(msp, h, r, dict):
+def reinforcing_steel_trans(msp, b, h, r, dict):
     """
     Definition
     -----------------
@@ -121,6 +122,7 @@ def reinforcing_steel_trans(msp, h, r, dict):
 
     Args:
     msp: model space
+    b: base
     h: height
     r: reinforcement coating
     dict: dictionary transversal steel (design)
