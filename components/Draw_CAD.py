@@ -73,7 +73,56 @@ def Initialize_Draw(b, h, lt, r, data_long, data_trans):
     for i in range(len(center)):
         msp.add_circle(center[i], 0.8, dxfattribs={"color":5})
 
-    
+    # Diameter of the N3 bar in cm
+    diameter_bar = 0.95  # cm
+
+    # Adjusted dimensions for the stirrup based on user inputs
+    ancho = b - 2 * r
+    altura = h - 2 * r
+
+    # External bar coordinates starting at (r, r)
+    off_bar = [
+        (r, r),
+        (r + ancho, r),
+        (r + ancho, r + altura),
+        (r, r + altura),
+        (r, r)  # Close the loop
+    ]
+
+    # Offset distance for the internal bar, accounting for bar diameter
+    offset = diameter_bar
+    on_bar = [
+        (r + offset, r + offset),
+        (r + ancho - offset, r + offset),
+        (r + ancho - offset, r + altura - offset),
+        (r + offset, r + altura - offset),
+        (r + offset, r + offset)  # Close the loop
+    ]
+
+    # Coordinates for the extension of the external bar
+    extension_on = [
+        (r + ancho, r + altura),  # Starting point of the external extension
+        (r + ancho + 0.5, r + altura)  # Extend to the right by 0.5 cm
+    ]
+
+    # Coordinates for the extension of the internal bar
+    extension_in = [
+        (r + ancho - offset, r + altura - offset),  # Starting point of the internal extension
+        (r + ancho + 0.5, r + altura - offset)  # Extend to the right by 0.5 cm
+    ]
+
+    # Add the external bar to the drawing
+    msp.add_lwpolyline(off_bar, dxfattribs={"color":1}).close(True)
+
+    # Add the internal bar to the drawing
+    msp.add_lwpolyline(on_bar, dxfattribs={"color":1}).close(True)
+
+    # Add the external extension to the drawing
+    msp.add_lwpolyline(extension_on, dxfattribs={"color":1}).close(False)
+
+    # Add the internal extension to the drawing
+    msp.add_lwpolyline(extension_in, dxfattribs={"color":1}).close(False)
+
 
     msp.add_aligned_dim(p1=(0,0), p2=(0,h), distance=2, override={"dimtad":0,
                                                                   "dimtxt": 2,
