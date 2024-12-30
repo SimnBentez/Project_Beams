@@ -76,13 +76,13 @@ def Select_bar_steel(As):
 
     lis1, lis2, lis3 = [], [], []
 
-    d = [3/8, 4/8, 5/8, 6/8] # diameters of road
+    d = [3/8, 4/8, 5/8, 6/8, 7/8] # diameters of road
 
     d = np.array(d) * 2.54  # array!!
 
     A = (np.pi / 4) * d ** 2 # areas of road
 
-    road = np.array(['N3', 'N4', 'N5', 'N6'])
+    road = np.array(['N3', 'N4', 'N5', 'N6', 'N7'])
 
     # An IMPORTANT clarification is made here, remember that this program is designed 
     # for elements subjected only to vertical loads, which is why only N6 rods are reached.
@@ -119,3 +119,35 @@ def Select_bar_steel(As):
             lis1.append(0), lis2.append('N/A'), lis3.append(0)
 
     return lis1, lis2, lis3
+
+def proofread_bar(lis1, lis2, lis3):
+    """
+    Definition
+    ---------------
+    This function is performed to make a correction regarding the issue of
+    the continuity of the reinforcement, since it seeks to obtain an order in the breakdown
+    since to give continuity to the steel you cannot combine two rods and then one,
+    or three and then two.
+
+    Return
+    ---------------
+    Returns the lists corresponding to each correction (areas, 
+    rod number and the percentage of error with the rod selected in the design)
+
+    Args:
+    lis1: list of areas
+    lis2: list of name bar
+    lis3: list of error bar (%)
+    """
+
+    condition = [int(item.split()[0]) for item in lis2]
+
+    if max(condition) != min(condition):
+        1
+    else:
+        list1, list2, list3 = lis1, lis2, lis3
+    
+    return list1, list2, list3
+
+def proofread_bar_two(Ast1, Ast2):
+    return 0

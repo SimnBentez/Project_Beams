@@ -2,6 +2,7 @@ import ezdxf
 import random  # needed for random placing points
 import os
 from components.Design import design_moment_beam, design_shear_beam
+import numpy as np
 
 
 def Initialize_Draw(b, h, lt, r, data_long, data_trans):
@@ -52,6 +53,28 @@ def Initialize_Draw(b, h, lt, r, data_long, data_trans):
 
     body.close(True)
 
+    # Reinforcement in cross section
+
+    bar_trans = (3/8)*2.54
+
+    cen_bar_trans = r + bar_trans + 0.8
+
+    center = [(cen_bar_trans, cen_bar_trans), (cen_bar_trans, h - cen_bar_trans), 
+              (b - cen_bar_trans, h - cen_bar_trans), (b - cen_bar_trans, cen_bar_trans)]
+    
+    for i in range(len(center)):
+        msp.add_circle(center[i], 0.8, dxfattribs={"color":1})
+        
+    y_cen_bar_double = cen_bar_trans + 2.5
+
+    center = [(cen_bar_trans, y_cen_bar_double), (cen_bar_trans, h - y_cen_bar_double), 
+              (b - cen_bar_trans, h - y_cen_bar_double), (b - cen_bar_trans, y_cen_bar_double)]
+    
+    for i in range(len(center)):
+        msp.add_circle(center[i], 0.8, dxfattribs={"color":5})
+
+    
+
     msp.add_aligned_dim(p1=(0,0), p2=(0,h), distance=2, override={"dimtad":0,
                                                                   "dimtxt": 2,
                                                                   "dimblk": "OBLIQUE",
@@ -62,10 +85,26 @@ def Initialize_Draw(b, h, lt, r, data_long, data_trans):
                                                                   "dimblk": "OBLIQUE",
                                                                   "dimasz": 2}).render()
 
-
     msp.add_text(
         text="N1", height=2, dxfattribs={"color":1}).set_placement(
-            (b/2, 2), align=ezdxf.enums.TextEntityAlignment.MIDDLE_CENTER)
+            (b/2, 1), align=ezdxf.enums.TextEntityAlignment.MIDDLE_CENTER)
+    
+    text = ["CONVENCIONES:", "SEGUNDA CAPA", "REFUERZO PPL"]
+
+    for i in range(len(text)):
+        if i == 0:
+            w = -8
+            msp.add_text(text=text[i], height=2, dxfattribs={"color":1}).set_placement(
+            (b/4, w), align=ezdxf.enums.TextEntityAlignment.MIDDLE_CENTER)
+        else:
+            w -= 3
+            msp.add_text(text=text[i], height=2, dxfattribs={"color":1}).set_placement(
+            (b/4 + 2.5, w), align=ezdxf.enums.TextEntityAlignment.MIDDLE_CENTER)
+            if w == -14:
+                msp.add_circle((-9, w), 0.8, dxfattribs={"color":1})
+            else:
+                msp.add_circle((-9, w), 0.8, dxfattribs={"color":5})
+
     
     msp.add_aligned_dim(p1=(2*b, 0), p2=(2*b+lt, 0), text=f"L={int(lt)}", distance=-2,
                     override={"dimtad":0,
@@ -73,9 +112,9 @@ def Initialize_Draw(b, h, lt, r, data_long, data_trans):
                                 "dimblk": "OBLIQUE",
                                 "dimasz": 2}).render()
     
-    #reinforcing_steel_long(msp, h, r, data_long)
+    #reinforcing_steel_long(msp, b, h, r, data_long)
 
-    #reinforcing_steel_trans(msp, h, r, data_trans):
+    #reinforcing_steel_trans(msp, b, h, r, data_trans)
 
     name = str(input('Ingrese el nombre del archivo .dxf: '))
     # save the drawing
@@ -107,6 +146,14 @@ def reinforcing_steel_long(msp, b, h, r, dict):
     dict: dictionary longitudinal steel (design)
     """
 
+    d = h - r
+
+    ubi_x = dict["Ubicación del momento (m)"]
+    condition = dict['Zona de colocación del refuerzo']
+    bar_simple = dict['Número de varilla 1']
+    bar_second = dict['Número de varilla 2']
+
+    
 
 def reinforcing_steel_trans(msp, b, h, r, dict):
     """
@@ -127,3 +174,5 @@ def reinforcing_steel_trans(msp, b, h, r, dict):
     r: reinforcement coating
     dict: dictionary transversal steel (design)
     """
+
+    d = h - r
