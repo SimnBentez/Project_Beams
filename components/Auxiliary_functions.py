@@ -120,7 +120,7 @@ def Select_bar_steel(As):
 
     return lis1, lis2, lis3
 
-def proofread_bar(lis1, lis2, lis3):
+def proofread_bar(lis1, lis2, lis3, Asl_simple):
     """
     Definition
     ---------------
@@ -138,16 +138,42 @@ def proofread_bar(lis1, lis2, lis3):
     lis1: list of areas
     lis2: list of name bar
     lis3: list of error bar (%)
+    Asl_simple: list of design areas (simple)
     """
+
+    # Please note that this is only done for single reinforcement, since for double reinforcement,
+    # it is not necessary to ensure any continuity and this is done in practice without any problem.
+
+    d = [3/8, 4/8, 5/8, 6/8, 7/8] # diameters of road
+
+    d = np.array(d) * 2.54  # array!!
+
+    A = (np.pi / 4) * d ** 2 # areas of road
+
+    road = np.array(['N3', 'N4', 'N5', 'N6', 'N7'])
 
     condition = [int(item.split()[0]) for item in lis2]
 
     if max(condition) != min(condition):
-        1
+        # the lists where the elements will be saved are generated
+        list1, list2, list3 = [], [], []
+        # the largest value is selected
+        j = max(condition)
+        
+        # Now we get the areas that need to be selected to ensure
+        # the continuity of the reinforcement
+        Ac = A * j
+
+        for i in range(len(Asl_simple)):
+            Ap = Asl_simple[i]
+            condition = min(np.abs(Ac - Ap))
+            
+            As0 = round(float(Ac[np.where(np.abs(Ac - Ap) == condition)]), 2)
+            name = f"{j} {road[np.where(np.abs(Ac - Ap) == condition)][0]}"
+            error = ((As0 - Ap) / Ap) * 100 # in porcentage
+            error = round(error, 2)
+            list1.append(As0), list2.append(name), list3.append(error)
     else:
         list1, list2, list3 = lis1, lis2, lis3
     
     return list1, list2, list3
-
-def proofread_bar_two(Ast1, Ast2):
-    return 0

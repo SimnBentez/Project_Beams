@@ -94,7 +94,7 @@ def restrictions_beam(n):
     for i in range(0, n):
         j = 0
         while j < 1:
-            if i+1 == n:
+            if n == 1:
                 try:
                     con1 = str(input(f'Al inicio del tramo {i+1} ' +
                     'está empotrado [e], empotrado con patines ' +
@@ -109,11 +109,26 @@ def restrictions_beam(n):
                     print('Ingrese una condición válida.')
             else:
                 try:
-                    con = str(input(f'Al inicio del tramo {i+1} ' + 
+                    if i == 0:
+                        con = str(input(f'Al inicio del tramo {i+1} ' + 
                             'está empotrado [e], empotrado con ' + 
                             'patines [ep], \napoyado [a] o libre [l]:'))
-                    j += 1   
-                    restriction.append(con)                
+                        j += 1   
+                        restriction.append(con)    
+                    elif i + 1 == n:
+                        con1 = str(input(f'Al inicio del tramo {i+1} ' + 
+                            'está apoyado [a] o libre [l]:'))
+                        con2 = str(input(f'Al final del tramo {i+1} ' + 
+                            'está empotrado [e], empotrado con ' + 
+                            'patines [ep], \napoyado [a] o libre [l]:'))
+                        j += 1   
+                        restriction.append(con1) 
+                        restriction.append(con2)    
+                    else:
+                        con = str(input(f'Al inicio del tramo {i+1} ' + 
+                            'está apoyado [a] o libre [l]:'))
+                        j += 1   
+                        restriction.append(con)            
                 except:
                     print('Ingrese una condición válida.')
     restriction = [0 if conditions == "e" or conditions == 'E'
@@ -125,10 +140,25 @@ def restrictions_beam(n):
         else conditions for conditions in restriction]
     restriction = [3 if conditions == "L" or conditions == 'l'
         else conditions for conditions in restriction]
-    nodes_beam(restriction)
     return restriction
 
 def nodes_beam(restriction):
+    """
+    Definition
+    ---------------------
+    This function is used to obtain the restrictions of the global stiffness matrix, 
+    thus solving the corresponding beam. However, it should be noted that the program 
+    is limited to the conditions previously mentioned in the "restriction" function. 
+    Also, embedded blocks the displacement and rotation (hence, [...0,0,...]), 
+    as well as the other conditions. To fully understand this topic, 
+    it is necessary to have knowledge of Vector Mechanics or Statics.
+
+    Args:
+    restriction (list): list from restriction.
+
+    Return
+    matrix_X (list): list for displacement.
+    """
     matrix_X = []
     for i in range(0, len(restriction)):
         if restriction[i] == 0:

@@ -38,7 +38,7 @@ def design_moment_beam(forces_beam, loads_applied, elements, lengths, height, ba
 
     fc, fy, Es, epc = com_con, 4200, 2e6, 0.003 # kgf/cm², kgf/cm², (1)
 
-    b, d, dps = base, height - r, r
+    b, d, dps = base, height - r, r + 2.5
 
     Rmn, Rn, Rmx, Ast1, obs, Ast2 = [], [], [], [], [], []
 
@@ -134,6 +134,8 @@ def design_moment_beam(forces_beam, loads_applied, elements, lengths, height, ba
             obs.append('N/A')
 
     Areas1, Nareas1, error1 = Select_bar_steel(Ast1)
+
+    Areas1, Nareas1, error1 = proofread_bar(Areas1, Nareas1, error1, Ast1)
 
     Areas2, Nareas2, error2 = Select_bar_steel(Ast2)
 
