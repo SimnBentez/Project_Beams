@@ -123,57 +123,57 @@ def Select_bar_steel(As):
 def proofread_bar(lis1, lis2, lis3, Asl_simple):
     """
     Definition
-    ---------------
-    This function is performed to make a correction regarding the issue of
-    the continuity of the reinforcement, since it seeks to obtain an order in the breakdown
-    since to give continuity to the steel you cannot combine two rods and then one,
-    or three and then two.
-
-    Return
-    ---------------
-    Returns the lists corresponding to each correction (areas, 
-    rod number and the percentage of error with the rod selected in the design)
-
+    ----------------
+    Function to correct reinforcement continuity, considering cases like 'N/A'.
+    
     Args:
-    lis1: list of areas
-    lis2: list of name bar
-    lis3: list of error bar (%)
-    Asl_simple: list of design areas (simple)
-    """
-
-    # Please note that this is only done for single reinforcement, since for double reinforcement,
-    # it is not necessary to ensure any continuity and this is done in practice without any problem.
-
-    d = [3/8, 4/8, 5/8, 6/8, 7/8] # diameters of road
-
-    d = np.array(d) * 2.54  # array!!
-
-    A = (np.pi / 4) * d ** 2 # areas of road
-
-    road = np.array(['N3', 'N4', 'N5', 'N6', 'N7'])
-
-    condition = [int(item.split()[0]) for item in lis2]
-
-    if max(condition) != min(condition):
-        # the lists where the elements will be saved are generated
-        list1, list2, list3 = [], [], []
-        # the largest value is selected
-        j = max(condition)
+        lis1 (list[float]): List of areas.
+        lis2 (list[str]): List of bar names (e.g., '2 N5', 'N/A').
+        lis3 (list[float]): List of percentage errors.
+        Asl_simple (list[float]): List of design areas (single reinforcement).
         
-        # Now we get the areas that need to be selected to ensure
-        # the continuity of the reinforcement
-        Ac = A * j
+    Returns:
+        tuple: Updated lists (areas, bar names, percentage errors).
+    """
+    import numpy as np
+    
+    # Diameters and corresponding areas
+    d = np.array([3/8, 4/8, 5/8, 6/8, 7/8]) * 2.54  # Convert inches to cm
+    A = (np.pi / 4) * d ** 2  # Areas of bars
+    road = np.array(['N3', 'N4', 'N5', 'N6', 'N7'])  # Bar types
 
+    # Identify valid entries (excluding 'N/A')
+    valid_indices = [i for i, val in enumerate(lis2) if val != 'N/A']
+    condition = [int(lis2[i].split()[0]) for i in valid_indices]
+
+    # Check if correction is needed
+    if max(condition, default=0) != min(condition, default=0):
+        # Prepare output lists
+        list1, list2, list3 = [], [], []
+        
+        # Get the maximum number of bars for continuity
+        j = max(condition)
+        Ac = A * j  # Areas for j bars
+
+        # Process valid entries
         for i in range(len(Asl_simple)):
-            Ap = Asl_simple[i]
-            condition = min(np.abs(Ac - Ap))
-            
-            As0 = round(float(Ac[np.where(np.abs(Ac - Ap) == condition)]), 2)
-            name = f"{j} {road[np.where(np.abs(Ac - Ap) == condition)][0]}"
-            error = ((As0 - Ap) / Ap) * 100 # in porcentage
-            error = round(error, 2)
-            list1.append(As0), list2.append(name), list3.append(error)
+            if i in valid_indices:  # Process only valid indices
+                Ap = Asl_simple[i]
+                condition_diff = np.abs(Ac - Ap)
+                
+                As0 = round(float(Ac[np.argmin(condition_diff)]), 2)
+                name = f"{j} {road[np.argmin(condition_diff)]}"
+                error = round(((As0 - Ap) / Ap) * 100, 2)  # Error in %
+                
+                list1.append(As0)
+                list2.append(name)
+                list3.append(error)
+            else:  # Maintain 'N/A' entries
+                list1.append(0)
+                list2.append('N/A')
+                list3.append(0)
     else:
+        # No correction needed, return original lists
         list1, list2, list3 = lis1, lis2, lis3
     
     return list1, list2, list3
