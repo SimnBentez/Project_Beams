@@ -198,3 +198,13 @@ The generated files will be saved in a folder named "Resultados" within the proj
 4. Free usage: This program is open-source and free to use. However, any use is at the user’s own responsibility.
 
 ![image](https://github.com/user-attachments/assets/1427d2d9-fcfd-4c7a-aa8e-9af232d2499c)
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+## Contact
+If you have any questions or need further information, feel free to contact me:
+
+- **Name**: Simón Benítez Soto
+- **Email**: simonbenitez627@gmail.com
+- **GitHub**: [sbenitezs](https://github.com/SimnBentez)
