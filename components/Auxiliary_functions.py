@@ -159,10 +159,10 @@ def proofread_bar(lis1, lis2, lis3, Asl_simple):
         for i in range(len(Asl_simple)):
             if i in valid_indices:  # Process only valid indices
                 Ap = Asl_simple[i]
-                condition_diff = np.abs(Ac - Ap)
+                condition_diff = Ac - Ap
                 
-                As0 = round(float(Ac[np.argmin(condition_diff)]), 2)
-                name = f"{j} {road[np.argmin(condition_diff)]}"
+                As0 = round(float(Ac[condition_diff>-0.08*Ac][np.argmin(condition_diff)]), 2)
+                name = f"{j} {road[condition_diff>0][np.argmin(condition_diff)]}"
                 error = round(((As0 - Ap) / Ap) * 100, 2)  # Error in %
                 
                 list1.append(As0)
